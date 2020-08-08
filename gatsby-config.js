@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: `/tictactoe`,
   plugins: [
     {
       resolve: `gatsby-plugin-page-creator`,
