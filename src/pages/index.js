@@ -107,7 +107,7 @@ const getInitialState = () => ({
   status: "inProgress",
   turn: "X",
   successGrid: newTicTacToeGrid().reduce((acc, row, rowIdx) => {
-    row.map((value, colIdx) => {
+    row.forEach((value, colIdx) => {
       acc[`${rowIdx}-${colIdx}`] = false;  
     });
     return acc;
@@ -138,7 +138,7 @@ const reducer = (state, action) => {
       if (checkForWin(flatGrid)) {
         const successIndexArr = checkForWin(flatGrid);
         nextState.status = "success";
-        Object.keys(nextState.successGrid).map((key, idx) => {
+        Object.keys(nextState.successGrid).forEach((key, idx) => {
           if (successIndexArr.some(el => el === idx)) {
             nextState.successGrid[key] = true            
           }
