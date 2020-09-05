@@ -1,8 +1,8 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import RestartButton from './components/RestartButton';
-import Cell from './components/Cell';
+import Grid from './components/Grid';
 
 const Title = styled.h1`
   background: linear-gradient(90deg, #7928ca 0%,#ff0080 100%);
@@ -46,16 +46,48 @@ const checkThree = (a, b, c) => {
 const checkForWin = flatGrid => {
   const [nw, n, ne, w, c, e, sw, s, se] = flatGrid;
 
-  return (
-    checkThree(nw, n, ne) ||
-    checkThree(w, c, e) ||
-    checkThree(sw, s, se) ||
-    checkThree(nw, w, sw) ||
-    checkThree(n, c, s) ||
-    checkThree(ne, e, se) ||
-    checkThree(nw, c, se) ||
-    checkThree(ne, c, sw)
-  );
+  const winTrio = [
+    {
+      valueArr: [nw, n, ne],
+      indexArr: [0, 1, 2]
+    },
+    {
+      valueArr: [w, c, e],
+      indexArr: [3, 4, 5]
+    },
+    {
+      valueArr: [sw, s, se],
+      indexArr: [6, 7, 8]
+    },
+    {
+      valueArr: [nw, w, sw],
+      indexArr: [0, 3, 6]
+    },
+    {
+      valueArr: [n, c, s],
+      indexArr: [1, 4, 7]
+    },
+    {
+      valueArr: [ne, e, se],
+      indexArr: [2, 5, 8]
+    },
+    {
+      valueArr: [nw, c, se],
+      indexArr: [0, 4, 8]
+    },
+    {
+      valueArr: [ne, c, sw],
+      indexArr: [2, 4, 6]
+    }
+  ];
+
+  return winTrio.map(({ valueArr: pair, indexArr }) => {
+    if (checkThree(...pair)) {
+      return indexArr;
+    } else {
+      return false;
+    }
+  }).find(Boolean);
 };
 
 const checkForDraw = flatGrid => {
@@ -73,7 +105,13 @@ const NEXT_TURN = {
 const getInitialState = () => ({
   grid: newTicTacToeGrid(),
   status: "inProgress",
-  turn: "X"
+  turn: "X",
+  successGrid: newTicTacToeGrid().reduce((acc, row, rowIdx) => {
+    row.map((value, colIdx) => {
+      acc[`${rowIdx}-${colIdx}`] = false;  
+    });
+    return acc;
+  }, {})
 });
 
 const reducer = (state, action) => {
@@ -98,7 +136,13 @@ const reducer = (state, action) => {
       const flatGrid = nextState.grid.flat(1);
 
       if (checkForWin(flatGrid)) {
+        const successIndexArr = checkForWin(flatGrid);
         nextState.status = "success";
+        Object.keys(nextState.successGrid).map((key, idx) => {
+          if (successIndexArr.some(el => el === idx)) {
+            nextState.successGrid[key] = true            
+          }
+        });
         return nextState;
       }
 
@@ -118,7 +162,7 @@ const reducer = (state, action) => {
 
 const Game = () => {
   const [state, dispatch] = React.useReducer(reducer, getInitialState());
-  const { grid, status, turn } = state;
+  const { grid, status, turn, successGrid } = state;
 
   const handleClick = (x, y) => {
     dispatch({ type: "CLICK", payload: { x, y } });
@@ -135,114 +179,7 @@ const Game = () => {
         <div>{status === "success" ? `${turn} won!` : null}</div>
         <RestartButton reset={reset} />
       </div>
-      <Grid grid={grid} handleClick={handleClick} />
+      <Grid grid={grid} successGrid={successGrid} handleClick={handleClick} />
     </div>
-  );
-};
-
-const GridContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-const expandX = keyframes`
-  from {
-    transform: scaleX(0);
-  }
-
-  to {
-    transform: scaleX(1);
-  }
-`;
-
-const expandY = keyframes`
-  from {
-    transform: scaleY(0);
-  }
-
-  to {
-    transform: scaleY(1);
-  }
-`;
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`;
-
-const GridLine = styled.div`
-  position: absolute;
-  background-color: #BFC7E3;
-
-  &:first-child {
-    top: 100px;
-    width: 100%;
-    height: 1px;
-    transform: scaleX(0);
-    animation: ${expandX} 0.5s ease-out 0.2s 1 forwards,
-      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
-
-  &:nth-child(2) {
-    bottom: 100px;
-    width: 100%;
-    height: 1px;
-    transform: scaleX(0);
-    animation: ${expandX} 0.5s ease-out 0.2s 1 forwards,
-      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
-
-  &:nth-child(3) {
-    left: 100px;
-    width: 1px;
-    height: 100%;
-    transform: scaleY(0);
-    animation: ${expandY} 0.5s ease-out 0.2s 1 forwards,
-      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
-
-  &:nth-child(4) {
-    right: 100px;
-    width: 1px;
-    height: 100%;
-    transform: scaleY(0);
-    animation: ${expandY} 0.5s ease-out 0.2s 1 forwards,
-      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
-`;
-
-const Grid = ({ grid, handleClick }) => {
-  return (
-    <GridContainer>
-      <GridLine />
-      <GridLine />
-      <GridLine />
-      <GridLine />
-      <div
-        style={{
-          backgroundColor: "transparent",
-          display: "grid",
-          gridTemplateRows: `repeat(${grid.length}), 1fr`,
-          gridTemplateColumns: `repeat(${grid[0].length}, 1fr)`,
-          gridGap: 1,
-          borderRadius: "18px",
-          boxShadow: "0 4px 20px rgb(54 195 255 / 8%)"
-           + ", 0 4px 10px rgb(189 172 255 / 25%)"
-        }}
-      >
-        {grid.map((row, rowIdx) =>
-          row.map((value, colIdx) => (
-            <Cell
-              key={`${colIdx}-${rowIdx}`}
-              onClick={() => {
-                handleClick(colIdx, rowIdx);
-              }}
-              value={value}
-            />
-          ))
-        )}
-      </div>
-    </GridContainer>
   );
 };

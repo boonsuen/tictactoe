@@ -21,7 +21,7 @@ const StyledCell = styled.div`
   }
 `;
 
-const Cell = ({ onClick, value }) => {
+const Cell = ({ onClick, value, isSuccess }) => {
   if (value) {
     if (value === 'X') {
       value = (<IconX />)
@@ -36,7 +36,7 @@ const Cell = ({ onClick, value }) => {
         style={{ 
           width: "100%", 
           height: "100%",
-          background: "#fff",
+          background: isSuccess ? '#EBFFFA' : "#fff",
           display: "flex",
           justifyContent: "center",
           alignItems: "center"
