@@ -160,6 +160,17 @@ const reducer = (state, action) => {
   }
 };
 
+const WonMessage = styled.div`
+  font-weight: 800;
+
+  span {
+    background: linear-gradient(135deg, rgb(97 83 255) 0%,rgb(213 159 255) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+  }
+`;
+
 const Game = () => {
   const [state, dispatch] = React.useReducer(reducer, getInitialState());
   const { grid, status, turn, successGrid } = state;
@@ -176,7 +187,11 @@ const Game = () => {
     <div style={{ display: "inline-block", maxWidth: 302 }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div><span style={{ fontWeight: 800 }}>{turn}</span> Turn</div>
-        <div>{status === "success" ? `${turn} won!` : null}</div>
+        <WonMessage>
+          {status === "success" 
+            ? [<span key="WonMessageSpan">{turn}</span>, ' won!']
+            : null}
+        </WonMessage>
         <RestartButton reset={reset} />
       </div>
       <Grid grid={grid} successGrid={successGrid} handleClick={handleClick} />
