@@ -1,6 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Helmet } from 'react-helmet';
+import RestartButton from './components/RestartButton';
+import Cell from './components/Cell';
 
 const Title = styled.h1`
   background: linear-gradient(90deg, #7928ca 0%,#ff0080 100%);
@@ -15,7 +17,7 @@ export default function App() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      margin: '40px 0'
+      padding: '40px 0'
     }}>
       <Helmet>
         <title>ticTacToe</title>
@@ -127,37 +129,99 @@ const Game = () => {
   };
 
   return (
-    <div style={{ display: "inline-block" }}>
+    <div style={{ display: "inline-block", maxWidth: 302 }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div>{turn} Turn</div>
+        <div><span style={{ fontWeight: 800 }}>{turn}</span> Turn</div>
         <div>{status === "success" ? `${turn} won!` : null}</div>
-        <button 
-          style={{
-            width: 80,
-            height: 32,
-            borderRadius: '17px',
-            fontSize: 16,
-            backgroundColor: '#fff',
-            boxShadow: '0 0 4px rgb(47 105 255 / 25%)',
-            marginBottom: 12
-          }}
-          onClick={reset} 
-          type="button"
-        >
-          Restart
-        </button>
+        <RestartButton reset={reset} />
       </div>
       <Grid grid={grid} handleClick={handleClick} />
     </div>
   );
 };
 
+const GridContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const expandX = keyframes`
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+`;
+
+const expandY = keyframes`
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+const GridLine = styled.div`
+  position: absolute;
+  background-color: #BFC7E3;
+
+  &:first-child {
+    top: 100px;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(0);
+    animation: ${expandX} 0.5s ease-out 0.2s 1 forwards,
+      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
+
+  &:nth-child(2) {
+    bottom: 100px;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(0);
+    animation: ${expandX} 0.5s ease-out 0.2s 1 forwards,
+      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
+
+  &:nth-child(3) {
+    left: 100px;
+    width: 1px;
+    height: 100%;
+    transform: scaleY(0);
+    animation: ${expandY} 0.5s ease-out 0.2s 1 forwards,
+      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
+
+  &:nth-child(4) {
+    right: 100px;
+    width: 1px;
+    height: 100%;
+    transform: scaleY(0);
+    animation: ${expandY} 0.5s ease-out 0.2s 1 forwards,
+      ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
+`;
+
 const Grid = ({ grid, handleClick }) => {
   return (
-    <div style={{ display: "inline-block" }}>
+    <GridContainer>
+      <GridLine />
+      <GridLine />
+      <GridLine />
+      <GridLine />
       <div
         style={{
-          backgroundColor: "#BFC7E3",
+          backgroundColor: "transparent",
           display: "grid",
           gridTemplateRows: `repeat(${grid.length}), 1fr`,
           gridTemplateColumns: `repeat(${grid[0].length}, 1fr)`,
@@ -179,42 +243,6 @@ const Grid = ({ grid, handleClick }) => {
           ))
         )}
       </div>
-    </div>
-  );
-};
-
-const StyledCell = styled.div`
-  width: 100px;
-  height: 100px;
-
-  &:first-child button {
-    border-top-left-radius: 18px;
-  }
-  &:nth-child(3) button {
-    border-top-right-radius: 18px;
-  }
-  &:nth-child(7) button {
-    border-bottom-left-radius: 18px;
-  }
-  &:last-child button {
-    border-bottom-right-radius: 18px;
-  }
-`;
-
-const Cell = ({ onClick, value }) => {
-  return (
-    <StyledCell>
-      <button
-        style={{ 
-          width: "100%", 
-          height: "100%",
-          background: "#fff"
-        }}
-        onClick={onClick}
-        type="button"
-      >
-        {value}
-      </button>
-    </StyledCell>
+    </GridContainer>
   );
 };
