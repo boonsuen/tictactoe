@@ -8,20 +8,12 @@ const GridContainer = styled.div`
 `;
 
 const expandX = keyframes`
-  from {
-    transform: scaleX(0);
-  }
-
   to {
     transform: scaleX(1);
   }
 `;
 
 const expandY = keyframes`
-  from {
-    transform: scaleY(0);
-  }
-
   to {
     transform: scaleY(1);
   }
