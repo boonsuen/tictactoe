@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import RestartButton from './components/RestartButton';
 import Grid from './components/Grid';
+import Counters from './components/Counters';
 
 const Title = styled.h1`
   background: linear-gradient(90deg, #7928ca 0%,#ff0080 100%);
@@ -102,7 +103,7 @@ const NEXT_TURN = {
   X: "O"
 };
 
-const getInitialState = () => ({
+const getInitialState = (lastScores) => ({
   grid: newTicTacToeGrid(),
   status: "inProgress",
   turn: "X",
@@ -111,7 +112,12 @@ const getInitialState = () => ({
       acc[`${rowIdx}-${colIdx}`] = false;  
     });
     return acc;
-  }, {})
+  }, {}),
+  scores: lastScores || {
+    X: 0,
+    O: 0,
+    tie: 0
+  }
 });
 
 const reducer = (state, action) => {
@@ -120,7 +126,7 @@ const reducer = (state, action) => {
   }
   switch (action.type) {
     case "RESET":
-      return getInitialState();
+      return getInitialState(state.scores);
     case "CLICK": {
       const { x, y } = action.payload;
       const { grid, turn } = state;
@@ -143,11 +149,14 @@ const reducer = (state, action) => {
             nextState.successGrid[key] = true            
           }
         });
+
+        nextState.scores[nextState.turn] += 1;
         return nextState;
       }
 
       if (checkForDraw(flatGrid)) {
-        return getInitialState();
+        nextState.scores.tie += 1;
+        return getInitialState(nextState.scores);
       }
 
       nextState.turn = NEXT_TURN[turn];
@@ -162,7 +171,7 @@ const reducer = (state, action) => {
 
 const Game = () => {
   const [state, dispatch] = React.useReducer(reducer, getInitialState());
-  const { grid, status, turn, successGrid } = state;
+  const { grid, status, turn, successGrid, scores } = state;
 
   const handleClick = (x, y) => {
     dispatch({ type: "CLICK", payload: { x, y } });
@@ -188,6 +197,7 @@ const Game = () => {
           reset
         }}
       />
+      <Counters scores={scores} />
     </div>
   );
 };
