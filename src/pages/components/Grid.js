@@ -37,6 +37,12 @@ const fadeIn = keyframes`
   }
 `;
 
+const moveUp = keyframes`
+  to {
+    transform: translateY(0px);
+  }
+`;
+
 const GridLine = styled.div`
   position: absolute;
   background-color: #BFC7E3;
@@ -88,6 +94,8 @@ const Overlay = styled.div`
   background: rgba(248, 252, 255, 0.46);
   border-radius: 18px;
   backdrop-filter: blur(2px);
+  opacity: 0;
+  animation: ${fadeIn} 0.4s ease-out 0s 1 forwards;
 
   button {
     width: 99px;
@@ -109,6 +117,8 @@ const Overlay = styled.div`
     border-radius: 20px;
     color: #fff;
     font-size: 14px;
+    transform: translateY(5px);
+    animation: ${moveUp} 0.3s ease 0s 1 forwards;
   }
 `;
 
