@@ -74,13 +74,73 @@ const GridLine = styled.div`
       ${fadeIn} 0.5s ease-out 0.2s 1 forwards;  }
 `;
 
-const Grid = ({ grid, successGrid, handleClick }) => {
+const Overlay = styled.div`
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 252, 255, 0.46);
+  border-radius: 18px;
+  backdrop-filter: blur(2px);
+
+  button {
+    width: 99px;
+    height: 35px;
+    margin-top: 7px;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.38) 0%,
+        rgba(255, 255, 255, 0.1) 100%
+      ),
+      radial-gradient(
+        50% 50% at 50% 50%,
+        rgba(23, 58, 255, 0.78) 0%,
+        #4c65f1 100%
+      );
+    border: 1px solid #ffffff;
+    box-shadow: 0px 4px 4px rgba(178, 205, 238, 0.25),
+      0px 0px 4px rgba(62, 116, 255, 0.33);
+    border-radius: 20px;
+    color: #fff;
+    font-size: 14px;
+  }
+`;
+
+const WonMessage = styled.div`
+  font-weight: 800;
+  line-height: 20px;
+
+  span {
+    background: linear-gradient(135deg, rgb(97 83 255) 0%,rgb(213 159 255) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+  }
+`;
+
+const Grid = ({ grid, status, turn, successGrid, handleClick, reset }) => {
   return (
-    <GridContainer>
+    <GridContainer status={status}>      
       <GridLine />
       <GridLine />
       <GridLine />
       <GridLine />
+      {status === 'success'
+        ? <Overlay status={status}>
+            <div style={{ backdropFilter: 'blur(1px)', textAlign: 'center'}}>
+              <WonMessage>
+                <span key="WonMessageSpan">{turn}</span> won!
+              </WonMessage>         
+              <button type="button" onClick={reset}>CONTINUE</button>
+            </div>
+          </Overlay>
+        : null}
       <div
         style={{
           backgroundColor: "transparent",
