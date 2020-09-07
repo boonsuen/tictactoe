@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
+import ModeToggleSwitch from './components/ModeToggleSwitch';
 import RestartButton from './components/RestartButton';
 import Grid from './components/Grid';
 import Counters from './components/Counters';
 
 const Title = styled.h1`
+  margin-top: 15px;
   background: linear-gradient(90deg, #7928ca 0%,#ff0080 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-size: 36px;
   font-weight: 800;
 `;
 
@@ -18,11 +21,14 @@ export default function App() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '40px 0'
+      padding: '25px 0'
     }}>
       <Helmet>
         <title>ticTacToe</title>
       </Helmet>
+      <div style={{width: 302, display: 'flex', justifyContent: 'flex-end'}}>
+        <ModeToggleSwitch defaultMode="robot" />
+      </div>
       <Title>ticTacToe</Title>
       <Game />
     </div>

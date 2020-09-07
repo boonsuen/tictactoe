@@ -1,0 +1,30 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="3.39453" y="3.39471" width="13.2105" height="13.2105" rx="2.5" fill="url(#paint0_radial)" stroke="#FFFEFE"/>
+<rect x="6.68408" y="0.799988" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="8.57861" y="0.799988" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="10.4736" y="0.799988" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="12.3682" y="0.799988" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="6.68408" y="16.1" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="8.57861" y="16.1" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="10.4736" y="16.1" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="12.3682" y="16.1" width="0.947368" height="3.07895" rx="0.473684" fill="white"/>
+<rect x="16.0996" y="6.6842" width="3.08" height="0.947368" rx="0.473684" fill="white"/>
+<rect x="16.0996" y="8.57895" width="3.08" height="0.947368" rx="0.473684" fill="white"/>
+<rect x="16.0996" y="10.4737" width="3.08" height="0.947368" rx="0.473684" fill="white"/>
+<rect x="16.0996" y="12.3684" width="3.08" height="0.947368" rx="0.473684" fill="white"/>
+<rect x="0.799805" y="6.6842" width="3.07895" height="0.947368" rx="0.473684" fill="white"/>
+<rect x="0.799805" y="8.57895" width="3.07895" height="0.947368" rx="0.473684" fill="white"/>
+<rect x="0.799805" y="10.4737" width="3.07895" height="0.947368" rx="0.473684" fill="white"/>
+<rect x="0.799805" y="12.3684" width="3.07895" height="0.947368" rx="0.473684" fill="white"/>
+<circle cx="6.09208" cy="6.56577" r="0.355263" fill="white"/>
+<circle cx="13.6707" cy="6.56577" r="0.355263" fill="white"/>
+<circle cx="13.6707" cy="13.6711" r="0.355263" fill="white"/>
+<circle cx="6.09208" cy="13.6711" r="0.355263" fill="white"/>
+<rect x="8.3418" y="8.3421" width="3.31579" height="3.31579" rx="1" fill="#FFF9F9"/>
+<defs>
+<radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.99979 9.99998) rotate(90) scale(7.10526)">
+<stop stop-color="#FFEDED"/>
+<stop offset="1" stop-color="white" stop-opacity="0.51"/>
+</radialGradient>
+</defs>
+</svg>
