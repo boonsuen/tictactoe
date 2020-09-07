@@ -93,16 +93,10 @@ const Overlay = styled.div`
     width: 99px;
     height: 35px;
     margin-top: 7px;
-    background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.38) 0%,
-        rgba(255, 255, 255, 0.1) 100%
-      ),
-      radial-gradient(
-        50% 50% at 50% 50%,
-        rgba(23, 58, 255, 0.78) 0%,
-        #4c65f1 100%
-      );
+    background: ${props =>
+      props.turn === 'X'
+        ? "linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.1) 100%), radial-gradient(50% 50% at 50% 50%, rgba(255, 23, 93, 0.78) 0%, #F14C74 100%);"
+        : "linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.1) 100% ), radial-gradient( 50% 50% at 50% 50%, rgba(23, 58, 255, 0.78) 0%, #4c65f1 100% );"}
     border: 1px solid #ffffff;
     box-shadow: 0px 4px 4px rgba(178, 205, 238, 0.25),
       0px 0px 4px rgba(62, 116, 255, 0.33);
@@ -119,7 +113,10 @@ const WonMessage = styled.div`
   line-height: 20px;
 
   span {
-    background: linear-gradient(135deg, rgb(97 83 255) 0%,rgb(213 159 255) 100%);
+    background: ${props =>
+      props.turn === "X"
+        ? "linear-gradient(135deg, rgb(255 83 238) 0%,rgb(255 159 194) 100%);"
+        : "linear-gradient(135deg, rgb(97 83 255) 0%,rgb(213 159 255) 100%);"}
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 800;
@@ -134,9 +131,9 @@ const Grid = ({ grid, status, turn, successGrid, handleClick, reset }) => {
       <GridLine />
       <GridLine />
       {status === 'success'
-        ? <Overlay status={status}>
+        ? <Overlay status={status} turn={turn}>
             <div style={{ backdropFilter: 'blur(1px)', textAlign: 'center'}}>
-              <WonMessage>
+              <WonMessage turn={turn}>
                 <span key="WonMessageSpan">{turn}</span> won!
               </WonMessage>         
               <button type="button" onClick={reset}>CONTINUE</button>
