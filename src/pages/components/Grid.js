@@ -115,7 +115,7 @@ const WonMessage = styled.div`
   span {
     background: ${props =>
       props.turn === "X"
-        ? "linear-gradient(135deg, rgb(255 83 238) 0%,rgb(255 159 194) 100%);"
+        ? "linear-gradient(135deg, rgb(255 83 176) 0%,rgb(255 159 194) 100%);"
         : "linear-gradient(135deg, rgb(97 83 255) 0%,rgb(213 159 255) 100%);"}
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
