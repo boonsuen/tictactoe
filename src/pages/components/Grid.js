@@ -130,16 +130,18 @@ const Grid = ({ grid, status, turn, successGrid, handleClick, reset }) => {
       <GridLine />
       <GridLine />
       <GridLine />
-      {status === 'success'
-        ? <Overlay status={status} turn={turn}>
-            <div style={{ backdropFilter: 'blur(1px)', textAlign: 'center'}}>
-              <WonMessage turn={turn}>
-                <span key="WonMessageSpan">{turn}</span> won!
-              </WonMessage>         
-              <button type="button" onClick={reset}>CONTINUE</button>
-            </div>
-          </Overlay>
-        : null}
+      {status === "success" && (
+        <Overlay status={status} turn={turn}>
+          <div style={{ backdropFilter: "blur(1px)", textAlign: "center" }}>
+            <WonMessage turn={turn}>
+              <span key="WonMessageSpan">{turn}</span> won!
+            </WonMessage>
+            <button type="button" onClick={reset}>
+              CONTINUE
+            </button>
+          </div>
+        </Overlay>
+      )}
       <div
         style={{
           backgroundColor: "transparent",
