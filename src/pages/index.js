@@ -1,10 +1,19 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Helmet } from 'react-helmet';
 import ModeToggleSwitch from './components/ModeToggleSwitch';
 import RestartButton from './components/RestartButton';
 import Grid from './components/Grid';
 import Counters from './components/Counters';
+
+const hue = keyframes`
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+`;
 
 const Title = styled.h1`
   margin-top: 15px;
@@ -13,6 +22,7 @@ const Title = styled.h1`
   -webkit-text-fill-color: transparent;
   font-size: 36px;
   font-weight: 800;
+  animation: ${hue} 10s infinite linear;
 `;
 
 export default function App() {
