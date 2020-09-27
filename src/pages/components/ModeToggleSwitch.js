@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import img_robot from '../../assets/img/robot.svg';
@@ -99,10 +99,10 @@ const Checkbox = styled.input`
 `;
 
 export default function ModeToggleSwitch(props) {
-  const [isRobotMode, setIsRobotMode] = useState(props.defaultMode === "robot");
+  const { isRobotMode, toggleRobotMode } = props;
 
   const onChange = (e) => {
-    setIsRobotMode(e.target.checked);
+    toggleRobotMode();
     if (typeof props.onChange === 'function') {
       props.onChange();
     }

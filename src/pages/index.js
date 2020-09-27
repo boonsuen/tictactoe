@@ -1,49 +1,44 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
 import ModeToggleSwitch from './components/ModeToggleSwitch';
 import RestartButton from './components/RestartButton';
 import Grid from './components/Grid';
 import Counters from './components/Counters';
 
-const hue = keyframes`
-  from {
-    -webkit-filter: hue-rotate(0deg);
-  }
-  to {
-    -webkit-filter: hue-rotate(-360deg);
-  }
-`;
-
 const Title = styled.h1`
   margin-top: 15px;
-  background: linear-gradient(90deg, #7928ca 0%,#ff0080 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   font-size: 36px;
   font-weight: 800;
-  animation: ${hue} 10s infinite linear;
-`;
+  z-index: 1;
+  position: relative;
+  display: block;
 
-export default function App() {
-  return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: '25px 0'
-    }}>
-      <Helmet>
-        <title>ticTacToe</title>
-      </Helmet>
-      <div style={{width: 302, display: 'flex', justifyContent: 'flex-end'}}>
-        <ModeToggleSwitch defaultMode="robot" />
-      </div>
-      <Title>ticTacToe</Title>
-      <Game />
-    </div>
-  );
-}
+  &::before {
+    content: "ticTacToe";
+    position: absolute;
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-image: linear-gradient(90deg, #007cf0 0%,#00dfd8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  span {
+    background-image: linear-gradient(90deg, #7928ca 0%,#ff0080 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+    opacity: ${props => props.isRobotMode ? "1" : "0"};
+    transition: opacity 0.3s ease-in;
+  }
+`;
 
 const clone = (x) => JSON.parse(JSON.stringify(x));
 
@@ -133,7 +128,8 @@ const getInitialState = (lastScores) => ({
     X: 0,
     O: 0,
     tie: 0
-  }
+  },
+  isRobotMode: true
 });
 
 const reducer = (state, action) => {
@@ -179,15 +175,20 @@ const reducer = (state, action) => {
 
       return nextState;
     }
+    case "TOGGLE_ROBOT_MODE": {
+      const nextState = clone(state);
+      nextState.isRobotMode = !nextState.isRobotMode;
+      return nextState;
+    }
 
     default:
       return state;
   }
 };
 
-const Game = () => {
+export default function App() {
   const [state, dispatch] = React.useReducer(reducer, getInitialState());
-  const { grid, status, turn, successGrid, scores } = state;
+  const { grid, status, turn, successGrid, scores, isRobotMode } = state;
 
   const handleClick = (x, y) => {
     dispatch({ type: "CLICK", payload: { x, y } });
@@ -197,23 +198,44 @@ const Game = () => {
     dispatch({ type: "RESET" });
   };
 
+  const toggleRobotMode = () => {
+    dispatch({ type: "TOGGLE_ROBOT_MODE" });
+  };
+
   return (
-    <div style={{ display: "inline-block", maxWidth: 302 }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div><span style={{ fontWeight: 800 }}>{turn}</span> Turn</div>        
-        <RestartButton reset={reset} />
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '25px 0'
+    }}>
+      <Helmet>
+        <title>ticTacToe</title>
+      </Helmet>
+      <div style={{width: 302, display: 'flex', justifyContent: 'flex-end'}}>
+        <ModeToggleSwitch
+          isRobotMode={isRobotMode}
+          toggleRobotMode={toggleRobotMode}
+        />
       </div>
-      <Grid
-        {...{
-          grid,
-          status,
-          turn,
-          successGrid,
-          handleClick,
-          reset
-        }}
-      />
-      <Counters scores={scores} />
+      <Title isRobotMode={isRobotMode}><span>ticTacToe</span></Title>
+      <div style={{ display: "inline-block", maxWidth: 302 }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div><span style={{ fontWeight: 800 }}>{turn}</span> Turn</div>        
+          <RestartButton reset={reset} />
+        </div>
+        <Grid
+          {...{
+            grid,
+            status,
+            turn,
+            successGrid,
+            handleClick,
+            reset
+          }}
+        />
+        <Counters scores={scores} />
+      </div>
     </div>
   );
-};
+}
