@@ -21,6 +21,7 @@ const Title = styled.h1`
     width: 100%;
     text-align: center;
     background-image: linear-gradient(90deg, #007cf0 0%,#00dfd8 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     top: 0;
@@ -31,6 +32,7 @@ const Title = styled.h1`
 
   span {
     background-image: linear-gradient(90deg, #7928ca 0%,#ff0080 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
